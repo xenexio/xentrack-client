@@ -1,3 +1,5 @@
+const helper = require('../lib/helper')
+
 module.exports = {
   fromString,
 }
@@ -21,7 +23,7 @@ function fromString(raw) {
     return null
   }
   let version = data[0]
-  let code = numToHex(data[1]) + numToHex(data[2]) + numToHex(data[3]) + numToHex(data[4])
+  let code = helper.numToHex(data[1]) + helper.numToHex(data[2]) + helper.numToHex(data[3]) + helper.numToHex(data[4])
   let list = []
   let pos = 5
   while (pos < data.length) {
@@ -42,7 +44,7 @@ function fromString(raw) {
       pos += 6
     } else if (type === 1) {
       let idx = data[pos] & 0x0f
-      let mac = (macPrefix[idx] && macPrefix[idx] + numToHex(data[pos + 1], 2) + numToHex(data[pos + 2], 2) + numToHex(data[pos + 3], 2)) || ''
+      let mac = (macPrefix[idx] && macPrefix[idx] + helper.numToHex(data[pos + 1], 2) + helper.numToHex(data[pos + 2], 2) + helper.numToHex(data[pos + 3], 2)) || ''
       list.push({
         type: 'temp',
         mac,
@@ -62,8 +64,4 @@ function fromString(raw) {
     code,
     list,
   }
-}
-
-function numToHex(n, d = 2) {
-  return n.toString(16).toUpperCase().padStart(d, '0')
 }
